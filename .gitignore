@@ -1,0 +1,3 @@
+# ignore dirs
+__pycache__/
+forumsApp/__pycache__/
