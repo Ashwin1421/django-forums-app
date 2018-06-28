@@ -1,0 +1,28 @@
+{% extends 'registration/base.html' %}
+{% block content %}
+<div class="container">
+        <div id="register-form" class="card card-container">
+                <p id="profile-name" class="profile-name-card"></p>
+                    <h3>New Account</h3>
+                    <form class="form-horizontal" action="" method="POST">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <p>
+                                {{ field.label_tag }}<br>
+                                {{ field }}
+                                {% if field.help_text %}
+                                <small style="color: grey">{{ field.help_text }}</small>
+                                {% endif %}
+                                {% for error in field.errors %}
+                                <p style="color: red">{{ error }}</p>
+                                {% endfor %}
+                            </p>
+                        {% endfor %}
+                        <button class="btn btn-success" type="submit">Sign Up</button>
+                </form><!-- /form -->
+                <a href="/loginView/">
+                    Already a user?
+                </a>
+            </div><!-- /card-container -->
+        </div><!-- /container -->
+{% endblock %}
