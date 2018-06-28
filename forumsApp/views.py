@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from forumsApp.models import Article, SignUpForm
+from forumsApp.models import Article
+from forumsApp.forms import SignUpForm
 from django.contrib.auth import login, authenticate, logout
 # Create your views here.
 
