@@ -1,28 +1,114 @@
 {% extends 'registration/base.html' %}
+{% load widget_tweaks %}
 {% block content %}
 <div class="container">
         <div id="register-form" class="card card-container">
                 <p id="profile-name" class="profile-name-card"></p>
-                    <h3>New Account</h3>
+                    <h3>Registration</h3>
                     <form class="form-horizontal" action="" method="POST">
                         {% csrf_token %}
-                        {% for field in form %}
-                            <p>
-                                {{ field.label_tag }}<br>
-                                {{ field }}
-                                {% if field.help_text %}
-                                <small style="color: grey">{{ field.help_text }}</small>
-                                {% endif %}
-                                {% for error in field.errors %}
-                                <p style="color: red">{{ error }}</p>
-                                {% endfor %}
-                            </p>
+
+                        {# render hidden fields here #}
+                        {% for hidden_field in form.hidden_fields %}
+                            {{ hidden_field }}
                         {% endfor %}
-                        <button class="btn btn-success" type="submit">Sign Up</button>
+
+                        {# render errors here #}
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger" role="alert">
+                                {% for error in form.non_field_errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <!--Name-->
+                        <div id="name-div" class="form-group has-feedback">
+                            <div class="col-sm-6">
+                                {% render_field form.first_name class="form-control" placeholder="First Name" %}
+                                <span id="fname-span" class="glyphicon form-control-feedback"></span>
+                                {% if form.first_name.help_text %}
+                                    <small class="text-muted">{{ form.first_name.help_text }}</small>
+                                {% endif %}
+                                {% for error in form.first_name.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                            <div class="col-sm-6">
+                                {% render_field form.last_name class="form-control" placeholder="Last Name" %}
+                                <span id="lname-span" class="glyphicon form-control-feedback"></span>
+                                {% if form.last_name.help_text %}
+                                    <small class="text-muted">{{ form.last_name.help_text }}</small>
+                                {% endif %}
+                                {% for error in form.last_name.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <!--Name-->
+                        <div class="form-group has-feedback">
+                            <div class="col-sm-12">
+                                {% render_field form.email class="form-control" placeholder="Email" %}
+                                {% if form.email.help_text %}
+                                    <small class="text-muted">{{ form.email.help_text }}</small>
+                                {% endif %}
+                                {% for error in form.email.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <!--UserName-->
+                        <div id="username-div" class="form-group has-feedback">
+                            <div class="col-sm-12">
+                                {% render_field form.username class="form-control" placeholder="Username" %}
+                                <span id="username-span" class="glyphicon form-control-feedback"></span>
+                                <span id="username-available" class="control-label"></span>
+                                {% if form.username.help_text %}
+                                    <small class="text-muted">{{ form.username.help_text }}</small>
+                                {% endif %}
+                                {% for error in form.username.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <!--UserName-->
+                        <div id="password-div" class="form-group has-feedback">
+                            <div class="col-sm-12">
+                                {% render_field form.password1 class="form-control" placeholder="Password" %}
+                                <span id="password-span" class="glyphicon form-control-feedback"></span>
+                                {% if form.password1.help_text %}
+                                    <small class="text-muted">{{ form.password1.help_text|safe }}</small>
+                                {% endif %}
+                                {% for error in form.password1.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div id="confirm-password-div" class="form-group has-feedback">
+                            <div class="col-sm-12">
+                                {% render_field form.password2 class="form-control" placeholder="Confirm Password" %}
+                                <span id="confirm-password-span" class="glyphicon form-control-feedback"></span>
+                                {% if form.password2.help_text %}
+                                    <ul>
+                                    <small class="text-muted">{{ form.password2.help_text }}</small>
+                                        </ul>
+                                {% endif %}
+                                {% for error in form.password2.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        </div>
+        
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <button class="btn btn-success col-sm-12" type="submit">Sign Up</button>
+                            </div>
+                            <div class="col-sm-6">
+                                <a href="/">
+                                    <button class="btn btn-primary col-sm-12" type="button">Cancel</button>
+                                </a>
+                            </div>
+                        </div>
                 </form><!-- /form -->
-                <a href="/loginView/">
-                    Already a user?
-                </a>
             </div><!-- /card-container -->
         </div><!-- /container -->
 {% endblock %}
