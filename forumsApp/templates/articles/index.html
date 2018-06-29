@@ -1,19 +1,22 @@
 {% extends 'articles/base.html' %}
 {% block content %}
     {% for article in article_list %}
-    <div class="container clearfix">
-        <article>
-            <a href="{{ article.url }}" target="_blank">
-                <h4>{{ article.title }}</h4>
-            </a>
-            <time datetime="{{ article.created|date:"c" }}">
-            &bull; {{ article.created|date }}
-            </time>
-            <blockquote>
-                <p>{{ article.description }} </p>
-            <!--<footer>{{ article.author }} </footer>-->
-            </blockquote>   
-        </article>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{ article.title }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">
+                {% if article.description %}
+                    {{ article.description }} &bull;
+                {% endif %}
+                {% if article.author %}
+                    {{ article.author }} &bull;
+                {% endif %}
+                <time datetime="{{ article.created|date:"c" }}">{{ article.created|date }}</time>
+            </h6>
+            <p class="card-text">{{ article.content }}</p>
+            <a href="" class="card-link">Card link</a>
+            <a href="" class="card-link">Another link</a>
+        </div>
     </div>
     {% endfor %}
 {% endblock %}

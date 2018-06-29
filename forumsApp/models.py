@@ -9,7 +9,7 @@ class Article(models.Model):
     content = models.TextField()
     published = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
-
+    author = models.CharField(max_length=150)
 
     def __str__(self):
         return self.title

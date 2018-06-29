@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from forumsApp.models import Article
-from forumsApp.forms import SignUpForm
+from forumsApp.forms import SignUpForm, ArticleCreationForm
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def index(request):
@@ -50,3 +51,25 @@ def signup(request):
         form = SignUpForm()
         
     return render(request, template_name, { 'form':form })
+
+@login_required
+def newArticle(request):
+    template_name = "articles/new_article.html"
+    print(request.user)
+    if request.method == "POST":
+        form = ArticleCreationForm(request.POST)
+        if form.is_valid():
+            new_article = Article()
+            new_article.title = form.cleaned_data.get("title")
+            new_article.description = form.cleaned_data.get("description")
+            new_article.content = form.cleaned_data.get("content")
+            if request.user.is_authenticated:
+                new_article.author = request.user.last_name+", "+request.user.first_name
+                
+            new_article.save()
+
+            return redirect("/")
+    else:
+        form = ArticleCreationForm()
+    
+    return render(request, template_name, { 'form' : form })
