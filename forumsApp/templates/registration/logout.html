@@ -1,0 +1,16 @@
+{% extends 'articles/base.html' %}
+{% block title %}Logged Out{% endblock %}
+{% block content %}
+{% load static %}
+<div class="card">
+    <h3>Thank You!</h3>
+    <hr>
+    <div id="logout-view">
+        <p>
+            Here are some useful links for you,
+            <a href="/loginView/">log back in</a> or 
+            <a href="/">go back to home page</a>.
+        </p>
+    </div>
+</div>
+{% endblock %}

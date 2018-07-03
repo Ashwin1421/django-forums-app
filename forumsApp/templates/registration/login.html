@@ -1,31 +1,50 @@
-{% extends 'registration/base.html' %}
+{% extends 'articles/base.html' %}
+{% load widget_tweaks %}
+{% block title %}Login{% endblock %}
 {% block content %}
 {% load static %}
-    <div class="container">
-        <div class="card card-container">
-            <img id="profile-img" class="profile-img-card" src="{% static 'registration/images/avatar_2x.png' %}" />
-                <p id="profile-name" class="profile-name-card"></p>
-                    {% if error %}
-                    <h3>{{ error }}</h3>
-                    {% endif %}
-                    <form class="form-signin" action="{% url 'login' %}" method="POST">
-                        {% csrf_token %}
-                        <div id="username-div" class="form-group has-feedback">
-                            <input type="text" name="username" id="username" class="form-control" placeholder="Username" required autofocus>
-                            <span id="username-span" class="glyphicon form-control-feedback"></span>
-                        </div>
-                        <div id="password-div" class="form-group has-feedback">
-                            <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
-                            <span id="password-span" class="glyphicon form-control-feedback"></span>
-                        </div>
-                        <div class="form-group text-center">
-                            <input type="submit" name="login" id="login-btn" value="Sign-in" class="btn btn-success">
-                            <input type="button" name="cancel" value="Cancel" class="btn btn-primary" onclick="location.href='/'">
-                        </div>
-                </form><!-- /form -->
-                <a href="/signup/">
-                    New User?
-                </a>
-            </div><!-- /card-container -->
-        </div><!-- /container -->
+<div class="card card-container">
+    <h3>Login</h3>
+    <hr>
+    <form class="form-horizontal" action="{% url 'login' %}" method="POST">
+        {% csrf_token %}
+
+        {# render hidden fields here #}
+        {% for hidden_field in form.hidden_fields %}
+            {{ hidden_field }}
+        {% endfor %}
+
+        {# render errors here #}
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+                {% for error in form.non_field_errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="form-group has-feedback">
+            {% render_field form.username class="form-control" placeholder="Username" %}
+            {% if form.username.help_text %}
+                <small class="text-muted">{{ form.username.help_text }}</small>
+            {% endif %}
+            {% for error in form.username.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+        <div id="password-div" class="form-group has-feedback">
+            {% render_field form.password class="form-control" placeholder="Password" %}
+            {% if form.password1.help_text %}
+                <small class="text-muted">{{ form.password1.help_text|safe }}</small>
+            {% endif %}
+            {% for error in form.password.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            <input type="submit" name="login" id="login-btn" value="Sign-in" class="btn btn-success">
+            <input type="button" name="cancel" value="Cancel" class="btn btn-primary" onclick="location.href='/'">
+        </div>
+    </form><!-- /form -->
+</div><!-- /card-container -->
 {% endblock %}
