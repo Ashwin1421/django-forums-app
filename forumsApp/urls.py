@@ -1,9 +1,11 @@
 from django.urls import path
 from django.contrib.auth.views import logout
+from django.conf.urls.static import static
+from django.conf import settings
 from . import views
 
 app_name = "forumsApp"
-urlpatterns = [
+urlpatterns = static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + [
     path("", views.index, name="index"),
     path("loginView/",views.loginView, name="loginView"),
     path("signup/", views.signup, name="signup"),
