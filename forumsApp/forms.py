@@ -1,8 +1,16 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
 from django.contrib.auth.models import User
 from forumsApp.models import Article
 
+
+class LoginForm(AuthenticationForm):
+    username = forms.CharField(max_length=254, required=True)
+    password = forms.CharField(required=True, widget=forms.PasswordInput)
+
+    class Meta:
+        model = User
+        fields = ('username','password',)
 
 class SignUpForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=True, help_text='Required')
@@ -21,3 +29,13 @@ class ArticleCreationForm(forms.Form):
     class Meta:
         model = Article
         fields = ('title','description','content','author')
+    
+class ProfileViewForm(UserChangeForm):
+    first_name = forms.CharField(max_length=150)
+    last_name = forms.CharField(max_length=150)
+    email = forms.EmailField(max_length=254)
+
+
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'email','password',)
