@@ -5,7 +5,7 @@ from forumsApp.models import Article
 
 class ArticleAdmin(admin.ModelAdmin):
     # fields display on change list
-    list_display = ['title', 'description']
+    list_display = ['title', 'description', 'author']
     # fields to filter the change list with
     list_filter = ['published', 'created']
     # fields to search in change list
