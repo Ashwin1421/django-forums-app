@@ -3,6 +3,7 @@
 {% block content %}
     {% for article in article_list %}
     <div class="card">
+        <img class="card-img-top" src="{{ MEDIA_URL }}{{ article.article_image }}">
         <div class="card-body">
             <h5 class="card-title">{{ article.title }}</h5>
             <h6 class="card-subtitle mb-2 text-muted">
