@@ -1,8 +1,10 @@
 {% extends 'articles/base.html' %}
+{% block title %}New Article{% endblock %}
 {% block content %}
 {% load widget_tweaks %}
 {% load static %}
-    <div id="newArticleForm" class="container">
+<div class="card">
+    <div id="newArticleForm">
         <form class="form-horizontal" method="POST">
             {% csrf_token %}
 
@@ -40,4 +42,5 @@
             </div>
         </form>
     </div>
+</div>
 {% endblock %}
