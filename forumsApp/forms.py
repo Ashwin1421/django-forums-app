@@ -25,10 +25,11 @@ class ArticleCreationForm(forms.Form):
     title = forms.CharField(max_length=150, required=True, help_text="Required. Put an interesting title here!")
     description = forms.CharField(max_length=255, required=False, help_text="Optional. A brief description of what the article is about.")
     content = forms.CharField(widget=forms.Textarea)
+    image = forms.ImageField(required=False,help_text="Upload a nice picture along with this article.")
 
     class Meta:
         model = Article
-        fields = ('title','description','content','author')
+        fields = ('title','description','content','image', 'author')
     
 class ProfileViewForm(UserChangeForm):
     first_name = forms.CharField(max_length=150)
