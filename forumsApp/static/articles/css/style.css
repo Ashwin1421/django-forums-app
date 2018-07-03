@@ -225,7 +225,16 @@ a.article:hover {
     transition: all 0.3s;
 }
 
+.card-img-top {
+    padding: 15px;
+    display: inline-block;
+    float: left;
+    height: auto;
+    width: 10vw;
+}
 .card {
+    height: auto;
+    display: block;
     margin: 10px;
 }
 
