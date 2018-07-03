@@ -1,10 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from forumsApp.models import Article
-from forumsApp.forms import SignUpForm, ArticleCreationForm
-from django.contrib.auth import login, authenticate, logout
+from forumsApp.forms import SignUpForm, ArticleCreationForm, LoginForm, ProfileViewForm
+from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
+from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import cache_control
+from django.contrib import messages
 # Create your views here.
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def index(request):
     template_name = "articles/index.html"
     article_list = Article.objects.filter(published=True)
@@ -16,23 +20,28 @@ def loginView(request):
     template_name = "registration/login.html"
 
     if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = request.POST.get("username")
+            password = request.POST.get("password")
+            
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect("/")
+            else:
+                return render(request, template_name, { "error" : "Incorrect username/password or both."})
 
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect("/")
-        else:
-            return render(request, template_name, { "error" : "Incorrect username/password or both."})
+    else:
+        form = LoginForm()
+    return render(request, template_name, { 'form' : form })
 
-    return render(request, template_name, {})
-
+@login_required
 def logoutView(request):
-    
+    template_name = "registration/logout.html"
     logout(request)
     
-    return redirect('/')
+    return render(request, template_name)
 
 
 def signup(request):
@@ -73,3 +82,36 @@ def newArticle(request):
         form = ArticleCreationForm()
     
     return render(request, template_name, { 'form' : form })
+
+@login_required
+def profile(request):
+    template_name = "profile/profile_view.html"
+    if request.method == "POST":
+        form = ProfileViewForm(request.POST, instance=request.user)
+        if form.is_valid():
+            user = form.save()
+            
+            return redirect("/")
+    else:
+        form = ProfileViewForm(instance=request.user)
+    
+    return render(request, template_name, { 'form' : form })
+    
+
+@login_required
+def change_password(request):
+    template_name = "registration/updatePassword.html"
+    
+    if request.method == "POST":
+        form = SetPasswordForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, "Your password was changed successfully!")
+            login(request, user)
+            return redirect("/")
+    else:
+        form = SetPasswordForm(request.user)
+    
+    return render(request, template_name, { 'form' : form })
+    
