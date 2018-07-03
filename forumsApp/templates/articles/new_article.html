@@ -5,7 +5,7 @@
 {% load static %}
 <div class="card">
     <div id="newArticleForm">
-        <form class="form-horizontal" method="POST">
+        <form class="form-horizontal" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
 
             {# render hidden fields here #}
