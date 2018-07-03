@@ -64,14 +64,14 @@ def signup(request):
 @login_required
 def newArticle(request):
     template_name = "articles/new_article.html"
-    print(request.user)
     if request.method == "POST":
-        form = ArticleCreationForm(request.POST)
+        form = ArticleCreationForm(request.POST, request.FILES)
         if form.is_valid():
             new_article = Article()
             new_article.title = form.cleaned_data.get("title")
             new_article.description = form.cleaned_data.get("description")
             new_article.content = form.cleaned_data.get("content")
+            new_article.article_image = form.cleaned_data.get("image")
             if request.user.is_authenticated:
                 new_article.author = request.user.last_name+", "+request.user.first_name
                 
