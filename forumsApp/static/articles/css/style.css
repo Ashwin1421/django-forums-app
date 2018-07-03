@@ -220,7 +220,8 @@ a.article:hover {
 #content {
     width: 100%;
     padding: 20px;
-    min-height: 100vh;
+    min-height: 120vh;
+    height: auto;
     transition: all 0.3s;
 }
 
@@ -228,27 +229,47 @@ a.article:hover {
     margin: 10px;
 }
 
-.container-actions {
-    display: block;
-    padding: 0;
-    margin: 0;
-}
-.post-action {
-    display: inline-block;
-    text-align: center;
-    min-width: 150px;
-    min-height: 50px;
-    border: 1px solid #D1D1D1;
-    border-radius: 2.5px;
-    color: #FFFFFF;
-    background: #cc2900;
-    padding: 15px;
-    margin: 10px;
-    box-shadow: 2px 2px 0 0 rgb(150, 150, 150, 0.1);
+#newArticleForm {
+    padding: 20px;
+    max-width: 850px;
 }
 
-.post-action:hover{
-    background: #ff3300;
+.card h3 {
+    padding: 40px 20px 0 20px;
+}
+
+.card hr {
+    margin: 20px;
+}
+
+#profile-view {
+    padding: 20px 40px 20px 40px;
+    max-width: 650px;
+}
+
+#profile-view .form-group a:hover{
+    color: #3171d8;
+    text-decoration: underline dotted;
+}
+
+#logout-view{
+    padding: 20px;
+}
+
+#logout-view a:link, 
+#logout-view a:visited, 
+#logout-view a:active{
+    color: #1fa53c;
+}
+
+#logout-view  a:hover{
+    color: #1fa53c;
+    text-decoration: underline;
+}
+
+#update-password-view {
+    padding: 20px;
+    max-width: 500px;
 }
 /* ---------------------------------------------------
     MEDIAQUERIES
