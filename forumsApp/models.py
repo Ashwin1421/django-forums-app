@@ -7,6 +7,7 @@ class Article(models.Model):
     title = models.CharField(max_length=150)
     description = models.CharField(max_length=255)
     content = models.TextField()
+    article_image = models.ImageField(upload_to='uploads/',default='noimage.png')
     published = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     author = models.CharField(max_length=150)
