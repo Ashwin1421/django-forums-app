@@ -1,11 +1,13 @@
 {% extends 'articles/base.html' %}
+{% load widget_tweaks %}
 {% block title %}AVJ Forums{% endblock %}
 {% block content %}
     {% for article in article_list %}
-    <div class="card">
-        <img class="card-img-top" src="{{ MEDIA_URL }}{{ article.article_image }}">
+    <div class="card article-card">
+        <img class="card-img-top card-img-tn" src="{{ MEDIA_URL }}{{ article.article_image }}">
         <div class="card-body">
-            <h5 class="card-title">{{ article.title }}</h5>
+            <a href="/article/{{ article.pk }}/"><h5 class="card-title">{{ article.title }}</h5></a>
+            {{ article.get_absolute_url }}
             <h6 class="card-subtitle mb-2 text-muted">
                 {% if article.description %}
                     {{ article.description }} &bull;
@@ -13,11 +15,19 @@
                 {% if article.author %}
                     {{ article.author }} &bull;
                 {% endif %}
-                <time datetime="{{ article.created|date:"c" }}">{{ article.created|date }}</time>
+                <time datetime="{{ article.created|date:"c" }}">{{ article.created|date:'F d, Y h:i A' }}</time>
             </h6>
-            <p class="card-text">{{ article.content }}</p>
-            <a href="" class="card-link">Card link</a>
-            <a href="" class="card-link">Another link</a>
+            <p class="card-text card-text-ellipsis">{{ article.content }}</p>
+            <p>
+                
+            </p>
+            <a href="" class="card-link"><i class="fas fa-share"></i></a>
+            <a class="card-link" href="">
+                <i class="fas fa-comment-alt"></i>
+                {% if article.comments.all %}
+                {{ article.comments.all.count }}
+                {% endif %}
+            </a>
         </div>
     </div>
     {% endfor %}

@@ -1,0 +1,77 @@
+{% extends 'articles/base.html' %}
+{% load widget_tweaks %}
+{% block title %}AVJ Forums{% endblock %}
+{% block content %}
+    <div class="card article-card">
+        <img class="card-img-top" src="{{ MEDIA_URL }}{{ article.article_image }}">
+        <div class="card-body">
+            <a href=""><h5 class="card-title">{{ article.title }}</h5></a>
+            <h6 class="card-subtitle mb-2 text-muted">
+                {% if article.description %}
+                    {{ article.description }} &bull;
+                {% endif %}
+                {% if article.author %}
+                    {{ article.author }} &bull;
+                {% endif %}
+                <time datetime="{{ article.created|date:"c" }}">{{ article.created|date:'F d, Y h:i A' }}</time>
+            </h6>
+            <p class="card-text">{{ article.content }}</p>
+            <p>
+                
+            </p>
+            <a href="" class="card-link"><i class="fas fa-share"></i></a>
+            <a class="card-link" href="#{{article.id}}" data-toggle="collapse" aria-expanded="false">
+                <i class="fas fa-comment-alt"></i>
+                {% if article.comments.all %}
+                {{ article.comments.all.count }}
+                {% endif %}
+            </a>
+            <div class="collapse" id="{{article.id}}">
+                {% if article.comments.all %}
+                <div class="card">
+                    <div class="card-body">
+                        {% for comment in article.comments.all %}
+                        <blockquote class="blockquote mb-0">
+                            <p>{{ comment }}</p>
+                        </blockquote>
+                        <footer class="blockquote-footer">{{ comment.author }}</footer>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {# render hidden fields here #}
+                        {% for hidden_field in form.hidden_fields %}
+                            {{ hidden_field }}
+                        {% endfor %}
+
+                        {# render errors here #}
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {% for error in form.non_field_errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        {% for field in comment_form %}
+                        <div class="form-group">
+                            {% render_field field class="form-control" %}
+                            {% if field.help_text %}
+                                <small class="text-muted">{{ field.help_text }}</small>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-success" value="Post">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
