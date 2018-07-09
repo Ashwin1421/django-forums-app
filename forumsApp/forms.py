@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
 from django.contrib.auth.models import User
-from forumsApp.models import Article
+from forumsApp.models import Article, Comment
 
 
 class LoginForm(AuthenticationForm):
@@ -40,3 +40,11 @@ class ProfileViewForm(UserChangeForm):
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'email','password',)
+    
+
+class CommentForm(forms.Form):
+    text = forms.CharField(widget=forms.Textarea)
+
+    class Meta:
+        model = Comment
+        fields = ('text','author',)
