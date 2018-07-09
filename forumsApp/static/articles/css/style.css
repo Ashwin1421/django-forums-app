@@ -27,6 +27,11 @@ a:focus {
     transition: all 0.3s;
 }
 
+a:visited {
+    color: inherit;
+    text-decoration: none;
+}
+
 .navbar {
     padding: 15px 10px;
     background: #fff;
@@ -227,15 +232,37 @@ a.article:hover {
 
 .card-img-top {
     padding: 15px;
-    display: inline-block;
-    float: left;
-    height: auto;
-    width: 10vw;
 }
-.card {
+
+.article-card {
     height: auto;
     display: block;
     margin: 10px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.card-text-ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    width: 65vw;
+    text-overflow: ellipsis;
+}
+.card-img-tn {
+    float: left;
+    display: inline;
+    height: 120px;
+    width: auto;
+}
+
+.card-link:link,
+.card-link:visited,
+.card-link:hover,
+.card-link:focus,
+.card-link:active {
+    color: inherit;
+    text-decoration: none;
+    outline: 0;
+    box-shadow: none;
 }
 
 #newArticleForm {
