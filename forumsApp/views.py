@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from forumsApp.models import Article
-from forumsApp.forms import SignUpForm, ArticleCreationForm, LoginForm, ProfileViewForm
+from forumsApp.models import Article, Comment
+from forumsApp.forms import SignUpForm, ArticleCreationForm, LoginForm, ProfileViewForm, CommentForm
 from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.decorators import login_required
@@ -12,8 +12,12 @@ from django.contrib import messages
 def index(request):
     template_name = "articles/index.html"
     article_list = Article.objects.filter(published=True)
+    comment_list = {}
+    for article in article_list:
+        comment_set = article.comments.all()
+        comment_list[article.id] = comment_set
 
-    return render(request, template_name, { 'article_list': article_list})
+    return render(request, template_name, { 'article_list': article_list, 'comment_list' : comment_list })
 
 
 def loginView(request):
@@ -98,7 +102,7 @@ def profile(request):
     return render(request, template_name, { 'form' : form })
     
 
-@login_required
+@login_required 
 def change_password(request):
     template_name = "registration/updatePassword.html"
     
@@ -114,4 +118,30 @@ def change_password(request):
         form = SetPasswordForm(request.user)
     
     return render(request, template_name, { 'form' : form })
+
+
+def article_detail_view(request, pk):
+    template_name = "articles/detail_view.html"
+    article = get_object_or_404(Article, pk=pk)
     
+    return render(request, template_name, { "article" : article })
+
+@login_required
+def add_comment(request, pk):
+    template_name = "articles/index.html"
+    article = get_object_or_404(Article, pk=pk)
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            new_comment = Comment()
+            new_comment.text = form.cleaned_data.get('text')
+            new_comment.post = article
+            if request.user.is_authenticated:
+                new_comment.author = request.user.last_name+", "+request.user.first_name
+            new_comment.save()
+            new_comment.approve()
+            return redirect("/")
+    else:
+        form = CommentForm()
+    
+    return render(request, template_name, { 'comment_form' : form })
