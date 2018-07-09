@@ -1,5 +1,5 @@
 from django.contrib import admin
-from forumsApp.models import Article
+from forumsApp.models import Article, Comment
 
 # Register your models here.
 
@@ -16,3 +16,4 @@ class ArticleAdmin(admin.ModelAdmin):
     save_on_top = True
 
 admin.site.register(Article, ArticleAdmin)
+admin.site.register(Comment)
